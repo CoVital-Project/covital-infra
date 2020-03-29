@@ -1,0 +1,9 @@
+# local dev env config
+.envrc
+.tool-versions
+
+
+# terraform locals
+.terraform
+tf.plan
+**tfstate
