@@ -13,11 +13,11 @@ provider "auth0" {
 resource "auth0_client" "covital_pulse_oximetry_client" {
   name                                = "CoVital Pulse Oximetry Native App"
   description                         = "Authentication Client for CoVital Pulse Oximetry project"
-  app_type                            = "native"
+  app_type                            = "regular_web"
   custom_login_page_on                = false
   is_first_party                      = true
-  is_token_endpoint_ip_header_trusted = true
-  token_endpoint_auth_method          = "client_secret_post"
+  is_token_endpoint_ip_header_trusted = false
+  token_endpoint_auth_method          = "none"
   oidc_conformant                     = true
   logo_uri                            = "https://i.imgur.com/CAlshnW.png"
   callbacks                           = ["https://localhost:9000/callback"]
