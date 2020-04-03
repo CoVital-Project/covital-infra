@@ -1,9 +1,12 @@
 // Auth0 Client Application and API Resource definition
 
+// Uses the following workspaces to inject the correct variables
+// dev-us
+// prod-us
 provider "auth0" {
+  domain = "o2-monitoring-${terraform.workspace}.auth0.com"
   /*
 	Requires the following environment variables in lieu of checked-in config vars.
-    export AUTH0_DOMAIN="<domain>.auth0.com" (currently he-sandbox.auth0.com)
     export AUTH0_CLIENT_ID="<client-id from the Auth0 Management API Access application>"
     export AUTH0_CLIENT_SECRET="<client_secret from the Auth0 Management API Access application>"
 	*/
@@ -20,9 +23,9 @@ resource "auth0_client" "covital_pulse_oximetry_client" {
   token_endpoint_auth_method          = "none"
   oidc_conformant                     = true
   logo_uri                            = "https://i.imgur.com/CAlshnW.png"
-  callbacks                           = ["https://localhost:9000/callback"]
+  callbacks                           = "${lookup(var.auth0_callback_urls, terraform.workspace)}"
   grant_types                         = ["authorization_code", "implicit", "refresh_token"]
-  allowed_logout_urls                 = ["https://localhost:9000"]
+  allowed_logout_urls                 = "${lookup(var.auth0_logout_urls, terraform.workspace)}"
 
   jwt_configuration {
     lifetime_in_seconds = 1200
@@ -63,8 +66,8 @@ resource "auth0_resource_server" "covital_pulse_oximetry_api" {
 }
 
 # Grant access to API from Application with read:user and read:all grants
-resource "auth0_client_grant" "covital_pulse_oximetry_client_grant" {
-  client_id = "auth0_client.covital_pulse_oximetry_client.id"
-  audience  = "auth0_resource_server.covital_pulse_oximetry_api.identifier"
-  scope     = ["read:user", "read:all"]
-}
+# resource "auth0_client_grant" "covital_pulse_oximetry_client_grant" {
+#   client_id = "auth0_client.covital_pulse_oximetry_client.id"
+#   audience  = "auth0_resource_server.covital_pulse_oximetry_api.identifier"
+#   scope     = ["read:user", "read:all"]
+# }
