@@ -14,8 +14,8 @@ variable "auth0_logout_urls" {
 }
 
 variable "auth0_end_user_api_audience" {
-  type    = map(list(string))
+  type    = map(string)
   default = {
-    dev-us: ["https://localhost:9000/callback"]
+    dev-us: "https://pulseox-sandbox.herokuapp.com/"
   }
 }

@@ -33,9 +33,32 @@ provider "auth0" {
 	*/
 }
 
+resource "auth0_tenant" "covital_tenant" {
+  default_directory = "Username-Password-Authentication"
+
+  friendly_name = "Covital Auth Tenant"
+  picture_url   = "https://i.imgur.com/CAlshnW.png"
+  support_email = "support@test.com"
+  support_url   = "https://covital.org/"
+
+  session_lifetime = 720
+  sandbox_version  = "8"
+
+  flags {
+    universal_login = true
+  }
+
+  universal_login {
+    colors {
+      page_background = "#000000"
+      primary         = "#0059d6"
+    }
+  }
+}
+
 # Create new Application in Auth0
 resource "auth0_client" "covital_pulse_oximetry_client" {
-  name                                = "CoVital Pulse Oximetry Native App"
+  name                                = "CoVital Pulse Oximetry"
   description                         = "Authentication Client for CoVital Pulse Oximetry project"
   app_type                            = "regular_web"
   custom_login_page_on                = false
@@ -73,7 +96,7 @@ resource "auth0_client" "covital_pulse_oximetry_client" {
 # Create new API resource in Auth0
 resource "auth0_resource_server" "covital_pulse_oximetry_api" {
   name       = "Pulse Oximetry Data Collection API"
-  identifier = "https://pulseox-sandbox.herokuapp.com/"
+  identifier = "${lookup(var.auth0_end_user_api_audience, terraform.workspace)}"
 
   scopes {
     value       = "read:user"
