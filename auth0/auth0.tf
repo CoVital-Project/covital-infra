@@ -85,10 +85,3 @@ resource "auth0_resource_server" "covital_pulse_oximetry_api" {
     description = "Ability to read data for all users"
   }
 }
-
-# Grant access to API from Application with read:user and read:all grants
-# resource "auth0_client_grant" "covital_pulse_oximetry_client_grant" {
-#   client_id = "auth0_client.covital_pulse_oximetry_client.id"
-#   audience  = "auth0_resource_server.covital_pulse_oximetry_api.identifier"
-#   scope     = ["read:user", "read:all"]
-# }
