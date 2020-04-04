@@ -1,8 +1,29 @@
-// Auth0 Client Application and API Resource definition
+/******************************************************************************** 
+  Auth0 Client Application and API Resource definition
+    You can initiate dev login by navigating to the following url:
+      https://o2-monitoring-dev-us.auth0.com/authorize?client_id=5SvFE06CGaHu39AmPQmTa76X1TlibVUt&redirect_uri=https://openidconnect.net/callback&scope=openid%20profile%20email%20phone%20address&response_type=code&state=5d839812bfb8ed9fc398065b4f4a534e5bee5bc9
+      
+    Here are descriptions of parameters that should be passed from a mobile app 
+      client_id:      Identifies the Auth0 Application to connect as
+      audience:       Identifies the API access being requested
+      redirect_uri:   Url to redirect back to upon login (should be a private-use URI like the following 
+                      for a native app redirecting to a browser for auth:  org.covital.o2monitor:/oauth2redirect/covital_pulse_oximetry_client_dev)
+      scope:          Scope for authentication regarding what information is required and what access is requested
+      response_type:  Should be code to ensure
+      code_challenge: PKCE code challenge (see https://tools.ietf.org/html/rfc7636)
+      state:          CSRF token (https://tools.ietf.org/html/rfc6819#page-13)
 
-// Uses the following workspaces to inject the correct variables
-// dev-us
-// prod-us
+  Uses the following workspaces to inject the correct variables for a specific environment
+    dev-us
+    prod-us
+
+  Example commands to execute in dev
+    export AUTH0_CLIENT_ID="<client-id from the Auth0 Management API Access application>"
+    export AUTH0_CLIENT_SECRET="<client_secret from the Auth0 Management API Access application>"
+    terraform workspace select dev-us
+    terraform plan
+    terraform apply
+*/
 provider "auth0" {
   domain = "o2-monitoring-${terraform.workspace}.auth0.com"
   /*
